@@ -32,4 +32,12 @@ public class BookService(IMemoryCache memoryCache, IOptions<CacheSettings> setti
 
         return booksFromSource;
     }
+
+    public void ClearCache()
+    {
+        const string cacheKey = "bookList";
+        memoryCache.Remove(cacheKey);
+    }
+
+
 }
