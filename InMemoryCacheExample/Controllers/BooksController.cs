@@ -1,4 +1,5 @@
-﻿using InMemoryCacheExample.Services;
+﻿using InMemoryCacheExample.Models;
+using InMemoryCacheExample.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InMemoryCacheExample.Controllers;
@@ -12,6 +13,13 @@ public class BooksController(IBookService bookService) : ControllerBase
     {
         var books = bookService.GetBooks();
         return Ok(books);
+    }
+
+    [HttpPost]
+    public IActionResult AddBook([FromBody] Book newBook)
+    {
+        bookService.AddBook(newBook);
+        return Ok();
     }
 
     [HttpDelete("clear")]

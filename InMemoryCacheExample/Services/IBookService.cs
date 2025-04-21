@@ -6,4 +6,5 @@ public interface IBookService
 {
     List<Book> GetBooks();
     void ClearCache();
+    void AddBook(Book newBook);
 }

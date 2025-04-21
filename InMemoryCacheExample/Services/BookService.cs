@@ -8,36 +8,35 @@ namespace InMemoryCacheExample.Services;
 
 public class BookService(IMemoryCache memoryCache, IOptions<CacheSettings> settings) : IBookService
 {
-    private readonly List<Book> fakeBooks = new()
-{
-    new Book(1, "Game of Thrones ", "George R. R. Martin"),
-    new Book(2, "A Young Girl's Diary", "Sigmund Freud"),
-    new Book(3, "1984", "George Orwell")
-};
+    private const string BookListCacheKey = "bookList";
+    private static readonly List<Book> fakeBooks = new()
+    {
+        new Book(1, "Game of Thrones ", "George R. R. Martin"),
+        new Book(2, "A Young Girl's Diary", "Sigmund Freud"),
+        new Book(3, "1984", "George Orwell")
+    };
     public List<Book> GetBooks()
     {
-        const string cacheKey = "bookList";
 
-        if (memoryCache.TryGetValue(cacheKey, out List<Book> cachedBooks))
+        if (memoryCache.TryGetValue(BookListCacheKey, out List<Book> cachedBooks))
         {
             return cachedBooks;
         }
 
         var booksFromSource = fakeBooks;
-
         var options = new MemoryCacheEntryOptions()
        .SetAbsoluteExpiration(TimeSpan.FromSeconds(settings.Value.BookCacheSeconds));
-
-        memoryCache.Set(cacheKey, booksFromSource, options);
-
+        memoryCache.Set(BookListCacheKey, booksFromSource, options);
         return booksFromSource;
     }
-
     public void ClearCache()
     {
-        const string cacheKey = "bookList";
-        memoryCache.Remove(cacheKey);
+        memoryCache.Remove(BookListCacheKey);
     }
-
+    public void AddBook(Book newBook)
+    {
+        fakeBooks.Add(newBook);
+        memoryCache.Remove(BookListCacheKey);
+    }
 
 }
