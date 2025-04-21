@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace InMemoryCacheExample.Controllers
+namespace InMemoryCacheExample.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class BooksController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class BooksController : ControllerBase
-    {
-    }
+    
+
 }

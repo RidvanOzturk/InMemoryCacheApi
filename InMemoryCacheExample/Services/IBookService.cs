@@ -1,6 +1,8 @@
-﻿namespace InMemoryCacheExample.Services
+﻿using InMemoryCacheExample.Models;
+
+namespace InMemoryCacheExample.Services;
+
+public interface IBookService
 {
-    public interface IBookService
-    {
-    }
+    List<Book> GetBooks();
 }
