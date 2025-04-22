@@ -9,4 +9,6 @@ public class DapperContext(IConfiguration configuration)
     private readonly string connectionString = configuration.GetConnectionString("DefaultConnection")!;
     public IDbConnection CreateConnection()
         => new SqlConnection(connectionString);
+
+
 }

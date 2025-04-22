@@ -14,8 +14,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
     <Folder Include="Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\InMemoryCacheExample.Service\InMemoryCacheExample.Service.csproj" />
   </ItemGroup>
 
 </Project>

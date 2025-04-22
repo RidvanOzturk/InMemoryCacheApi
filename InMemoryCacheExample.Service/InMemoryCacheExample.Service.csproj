@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\InMemoryCacheExample.Data\InMemoryCacheExample.Data.csproj" />
+  </ItemGroup>
+
 </Project>

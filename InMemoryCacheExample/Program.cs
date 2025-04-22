@@ -1,3 +1,6 @@
+using DapperCacheExample.Data;
+using InMemoryCacheExample.Service.Contracts;
+using InMemoryCacheExample.Service.Implementations;
 using InMemoryCacheExample.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddMemoryCache();
+
+builder.Services.AddSingleton<DapperContext>();
+
+builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.Configure<CacheSettings>(
     builder.Configuration.GetSection("CacheSettings")
