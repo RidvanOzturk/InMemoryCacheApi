@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InMemoryCacheExample.Api", "InMemoryCacheExample\InMemoryCacheExample.Api.csproj", "{672FAC8B-DA7F-4CFB-9E63-2AB65020E6F9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InMemoryCacheExample.Api", "InMemoryCacheExample.Api\InMemoryCacheExample.Api.csproj", "{672FAC8B-DA7F-4CFB-9E63-2AB65020E6F9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InMemoryCacheExample.Data", "InMemoryCacheExample.Data\InMemoryCacheExample.Data.csproj", "{750E214B-B62F-4FBD-8C3F-C3884D3BE9AE}"
 EndProject
