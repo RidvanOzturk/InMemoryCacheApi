@@ -19,6 +19,7 @@ builder.Services.Configure<CacheSettings>(
 );
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddResponseCaching();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -26,7 +27,7 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
-
+app.UseResponseCaching();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

@@ -14,10 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\InMemoryCacheExample.Service\InMemoryCacheExample.Service.csproj" />
   </ItemGroup>
 
