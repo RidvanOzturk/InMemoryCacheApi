@@ -10,7 +10,6 @@ namespace InMemoryCacheExample.Api.Controllers;
 [ApiController]
 public class UserController(IUserService userService) : ControllerBase
 {
-    [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)]
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
@@ -18,6 +17,7 @@ public class UserController(IUserService userService) : ControllerBase
         return Ok(users);
     }
 
+    [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {

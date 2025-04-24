@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using DapperCacheExample.Data;
 using InMemoryCacheExample.Data.Entities;
+using InMemoryCacheExample.Service.Caching;
 using InMemoryCacheExample.Service.Contracts;
 using InMemoryCacheExample.Service.DTOs;
 using Microsoft.Extensions.Caching.Memory;
@@ -49,7 +50,7 @@ public class UserService(DapperContext context, IMemoryCache memoryCache) : IUse
         };
 
         memoryCache.Set(cacheKey, model, TimeSpan.FromMinutes(10));
-
+        MemoryCacheKeyStore.Add(cacheKey);
         return model;
     }
 
@@ -80,9 +81,14 @@ public class UserService(DapperContext context, IMemoryCache memoryCache) : IUse
 
     public async Task<bool> DeleteAsync(int id)
     {
+        var cacheKey = $"user-id-{id}";
+        memoryCache.Remove(cacheKey);
+        Console.WriteLine($"CACHE remove → {cacheKey}");
+
         using var conn = context.CreateConnection();
         var sql = "DELETE FROM Users WHERE Id = @id";
         var result = await conn.ExecuteAsync(sql, new { id });
+
         return result > 0;
     }
 }
