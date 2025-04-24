@@ -1,4 +1,6 @@
 using DapperCacheExample.Data;
+using InMemoryCacheExample.Data.Repositories.Contracts;
+using InMemoryCacheExample.Data.Repositories.Implementations;
 using InMemoryCacheExample.Service.Contracts;
 using InMemoryCacheExample.Service.Implementations;
 using InMemoryCacheExample.Settings;
@@ -11,7 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddMemoryCache();
 
 builder.Services.AddSingleton<DapperContext>();
-
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.Configure<CacheSettings>(

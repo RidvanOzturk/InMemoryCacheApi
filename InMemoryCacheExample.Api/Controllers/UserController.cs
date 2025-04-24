@@ -1,7 +1,6 @@
 ﻿using InMemoryCacheExample.Api.Models;
 using InMemoryCacheExample.Service.Contracts;
 using InMemoryCacheExample.Service.DTOs;
-using InMemoryCacheExample.Service.Implementations;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InMemoryCacheExample.Api.Controllers;
@@ -10,18 +9,11 @@ namespace InMemoryCacheExample.Api.Controllers;
 [ApiController]
 public class UserController(IUserService userService) : ControllerBase
 {
-    [HttpGet]
-    public async Task<IActionResult> GetAll()
-    {
-        var users = await userService.GetAllAsync();
-        return Ok(users);
-    }
-
     [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
-        var user = await userService.GetByIdAsync(id);
+        var user = await userService.GetAsync(id);
         return user is null ? NotFound() : Ok(user);
     }
 
