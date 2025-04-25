@@ -17,6 +17,7 @@ public class UserRepository(DapperContext context) : IUserRepository
     {
         using var conn = context.CreateConnection();
         var sql = "INSERT INTO Users (Username, Fullname) VALUES (@Username, @Fullname); SELECT CAST(SCOPE_IDENTITY() as int);";
+
         return await conn.ExecuteScalarAsync<int>(sql, user);
     }
 
@@ -25,6 +26,7 @@ public class UserRepository(DapperContext context) : IUserRepository
         using var conn = context.CreateConnection();
         var sql = "UPDATE Users SET Username = @Username, Fullname = @Fullname WHERE Id = @Id";
         var result = await conn.ExecuteAsync(sql, new { user.Username, user.Fullname, Id = id });
+
         return result > 0;
     }
 
@@ -33,6 +35,7 @@ public class UserRepository(DapperContext context) : IUserRepository
         using var conn = context.CreateConnection();
         var sql = "DELETE FROM Users WHERE Id = @id";
         var result = await conn.ExecuteAsync(sql, new { id });
+
         return result > 0;
     }
 }

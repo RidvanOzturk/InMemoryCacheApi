@@ -1,6 +1,5 @@
 ﻿using InMemoryCacheExample.Data.Entities;
 using InMemoryCacheExample.Data.Repositories.Contracts;
-using InMemoryCacheExample.Service.Caching;
 using InMemoryCacheExample.Service.Contracts;
 using InMemoryCacheExample.Service.DTOs;
 using Microsoft.Extensions.Caching.Memory;
@@ -9,20 +8,22 @@ namespace InMemoryCacheExample.Service.Implementations;
 
 public class UserService(IUserRepository repository, IMemoryCache memoryCache) : IUserService
 {
+    private const string UserIdCacheKeyTemplate = "user-id-{0}";
+
     public async Task<UserResponseDTO?> GetAsync(int id)
     {
-        var cacheKey = $"user-id-{id}";
+        var idKey = string.Format(UserIdCacheKeyTemplate, id);
 
-        if (memoryCache.TryGetValue(cacheKey, out UserResponseDTO cached))
+        if (memoryCache.TryGetValue(idKey, out UserResponseDTO cached))
         {
-            Console.WriteLine("There is cache");
             return cached;
         }
 
-        Console.WriteLine("There is no cache, going to db");
-
         var user = await repository.GetAsync(id);
-        if (user is null) return null;
+        if (user is null) 
+        {
+            return null;
+        }
 
         var dto = new UserResponseDTO
         {
@@ -30,9 +31,7 @@ public class UserService(IUserRepository repository, IMemoryCache memoryCache) :
             Username = user.Username,
             Fullname = user.Fullname
         };
-
-        memoryCache.Set(cacheKey, dto, TimeSpan.FromMinutes(10));
-        MemoryCacheKeyStore.Add(cacheKey);
+        memoryCache.Set(UserIdCacheKeyTemplate, dto, TimeSpan.FromMinutes(10));
 
         return dto;
     }
@@ -45,17 +44,11 @@ public class UserService(IUserRepository repository, IMemoryCache memoryCache) :
             Fullname = userRequestDTO.Fullname
         };
 
-        var usernameKey = $"user-username-{userRequestDTO.Username}";
         var response = new UserResponseDTO { Id = 0, Username = userRequestDTO.Username, Fullname = userRequestDTO.Fullname };
-        memoryCache.Set(usernameKey, response, TimeSpan.FromMinutes(10));
-        MemoryCacheKeyStore.Add(usernameKey);
-
         var newId = await repository.CreateAsync(user);
-
-        var idKey = $"user-id-{newId}";
+        var idKey = string.Format(UserIdCacheKeyTemplate, newId);
         response.Id = newId;
         memoryCache.Set(idKey, response, TimeSpan.FromMinutes(10));
-        MemoryCacheKeyStore.Add(idKey);
 
         return newId;
     }
@@ -69,7 +62,10 @@ public class UserService(IUserRepository repository, IMemoryCache memoryCache) :
         };
 
         var success = await repository.UpdateAsync(id, user);
-        if (!success) return false;
+        if (!success)
+        {
+            return false;
+        } 
 
         var updated = new UserResponseDTO
         {
@@ -78,24 +74,18 @@ public class UserService(IUserRepository repository, IMemoryCache memoryCache) :
             Fullname = userRequestDTO.Fullname
         };
 
-        var idKey = $"user-id-{id}";
-        var usernameKey = $"user-username-{userRequestDTO.Username}";
-
+        var idKey = string.Format(UserIdCacheKeyTemplate, id);
         memoryCache.Set(idKey, updated, TimeSpan.FromMinutes(10));
-        memoryCache.Set(usernameKey, updated, TimeSpan.FromMinutes(10));
-        MemoryCacheKeyStore.Add(idKey);
-        MemoryCacheKeyStore.Add(usernameKey);
 
         return true;
     }
 
     public async Task<bool> DeleteAsync(int id)
     {
-        var idKey = $"user-id-{id}";
+        var idKey = string.Format(UserIdCacheKeyTemplate, id);
         memoryCache.Remove(idKey);
-        MemoryCacheKeyStore.Remove(idKey);
-
         var success = await repository.DeleteAsync(id);
+
         return success;
     }
 }

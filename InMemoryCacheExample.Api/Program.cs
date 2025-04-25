@@ -3,7 +3,6 @@ using InMemoryCacheExample.Data.Repositories.Contracts;
 using InMemoryCacheExample.Data.Repositories.Implementations;
 using InMemoryCacheExample.Service.Contracts;
 using InMemoryCacheExample.Service.Implementations;
-using InMemoryCacheExample.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,9 +15,6 @@ builder.Services.AddSingleton<DapperContext>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 
-builder.Services.Configure<CacheSettings>(
-    builder.Configuration.GetSection("CacheSettings")
-);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddResponseCaching();
