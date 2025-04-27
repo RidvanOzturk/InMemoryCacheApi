@@ -20,20 +20,20 @@ It applies a clean, layered architecture and the cache-aside pattern to improve 
 - Install [.NET 9 SDK.](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
 
 - Set up a [SQL Server](https://www.microsoft.com/en-us/sql-server/sql-server-downloads) database and use
-  * ```CREATE TABLE Users (
+  * ```
+    CREATE TABLE Users (
     Id INT PRIMARY KEY IDENTITY,
     Username NVARCHAR(100),
-    Fullname NVARCHAR(150));
-
+    Fullname NVARCHAR(150)
+    );
     SET NOCOUNT ON;
     DECLARE @i INT = 1;
     WHILE @i <= 1000000
     BEGIN
     INSERT INTO Users (Username, Fullname)
-    VALUES (CONCAT('user', @i),CONCAT('Fullname ', @i);
+    VALUES (CONCAT('user', @i), CONCAT('Fullname ', @i));
     SET @i = @i + 1;
     END
-
 - Clone the Repository:
   * `git clone https://github.com/RidvanOzturk/InMemoryCacheExample.git`
 
